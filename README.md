@@ -38,5 +38,12 @@ sudo chmod g+r /dev/ttyAMA0
 reboot
 Or just create a script that will do this automatically
 
+tips for AT commands
+make sure to do space or new line stuff after
+no spaces in wifi ssid name
 
 
+for soft uart
+https://github.com/adrianomarto/soft_uart
+
+sudo insmod soft_uart.ko
