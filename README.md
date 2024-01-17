@@ -1,7 +1,8 @@
 # my_bittle
 
 ## OS
-Use ubuntu 22.04.
+Use ubuntu 22.04 or raspberry pi os.
+
 
 Increase swap memory:
 ```
@@ -38,12 +39,19 @@ sudo chmod g+r /dev/ttyAMA0
 reboot
 Or just create a script that will do this automatically
 
-tips for AT commands
-make sure to do space or new line stuff after
-no spaces in wifi ssid name
+## Configuring the MU3 Camera
+Plug it into the raspberry pi to 3.3v power, ground, and then rx to pin 5 and tx to pin 6 on the GPIO.
 
+If you want to expiriment with AT commands, you can use the chat_serial.py script. Run this, then type in `AT+HELP ` and then hit enter. Note the space at the end. Also note that there can be no spaces in the wifi SSID name.
 
-for soft uart
-https://github.com/adrianomarto/soft_uart
+I installed soft UART as per https://github.com/adrianomarto/soft_uart. This let me run a software uart port on gpio pins to talk to the camera (slowly).
+```
+sudo insmod soft_uart.ko gpio_tx=5 gpio_rx=6 # to add
+sudo rmmod soft_uart.ko # to remove
+```
 
-sudo insmod soft_uart.ko
+It creates a software serial port at `/dev/ttySOFT'. The script below uses this to setup the wlan for your wifi on the camera. You could add this to the crontab to run at reboot. Note you may have to change the log directory.
+
+```
+sudo python3 setup_wlan.py my_wifi_name my_password
+```
