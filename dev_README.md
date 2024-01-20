@@ -6,6 +6,12 @@ https://docs.petoi.com/apis/serial-protocol#arduino-ide-as-an-interface
 
 ## doing a release
 
+Run tests. If you get module not found then add the my_bittle location to path.
+
+```commandline
+python -m unittest discover tests
+```
+
 Update the version in pyproject.toml to match git tag you'll build
 Build a git tag.
 If adding more dependencies update pyproject.toml.
