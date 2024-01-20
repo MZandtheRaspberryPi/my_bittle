@@ -1,5 +1,9 @@
 # my_bittle
 
+## Bittle Serial References
+https://docs.petoi.com/apis/serial-protocol#arduino-ide-as-an-interface
+
+
 ## OS
 Use ubuntu 22.04 or raspberry pi os.
 
