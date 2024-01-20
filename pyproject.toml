@@ -2,7 +2,7 @@
 name = "my_bittle"
 version = "0.0.1"
 authors = [
-    { name = "MZandtheRaspberryPi", email = "mzandtheraspberrypi[at]gmail.com" },
+    { name = "MZandtheRaspberryPi", email = "mzandtheraspberrypi@gmail.com" },
 ]
 description = "A small package to enable keyboard control of the Bittle robot dog."
 readme = "README.md"
@@ -13,9 +13,19 @@ classifiers = [
     "Operating System :: OS Independent",
 ]
 
+dependencies = [
+    "pyserial"
+]
+
+[project.scripts]
+bittle-keyboard-control = "my_bittle.bittle_keyboard_control:main"
+
 [project.urls]
 Homepage = "https://github.com/MZandtheRaspberryPi/my_bittle"
 
 [build-system]
 requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+package-dir = { "my_bittle" = 'my_bittle' }

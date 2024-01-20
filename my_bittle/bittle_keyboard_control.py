@@ -23,6 +23,7 @@ def main():
 
     signal.signal(signal.SIGINT, signal_handler)
     default_command = BittleCommand.BALANCE
+    my_bittle_controller.start()
 
     while not exit_flag:
         print(MSG)
@@ -33,6 +34,8 @@ def main():
             command = BITTLE_COMMAND_MAPPING.get(key, default_command)
         my_bittle_controller.command_bittle(command)
         time.sleep(SERIAL_CHECK_FOR_COMMANDS_DELAY)
+
+    my_bittle_controller.stop()
 
 
 if __name__ == "__main__":

@@ -11,7 +11,7 @@ from my_bittle.keyboard_listener import KEYBOARD_FORWARD_KEY, KEYBOARD_BACKWARD_
 BITTLE_BAUD_RATE = 115200
 
 
-class BittleCommand(enum):
+class BittleCommand(enum.Enum):
     # Walking
     FORWARD = "wkF"
     FORWARD_LEFT = "wkL"
@@ -49,15 +49,8 @@ class BittleSerialController:
         self.__serial_comm = serial.Serial()
         self.__configure_serial_port()
         self.__exit_flag = False
-        self.__serial_thread = threading.Thread(target=self.__run_serial_communicator)
         self.__command_q = queue.Queue()
-
-    def __del__(self):
-        self.sleep_bittle()
-        time.sleep(SERIAL_CHECK_FOR_COMMANDS_DELAY * 10)
-        self.__exit_flag = True
-        self.__serial_thread.join()
-        self.__serial_comm.close()
+        self.__serial_thread = threading.Thread(target=self.__run_serial_communicator)
 
     def _send_cmd(self, cmd: str):
         self.__command_q.put(cmd.encode())
@@ -67,6 +60,9 @@ class BittleSerialController:
             if self.__command_q.qsize() > 0:
                 cmd = self.__command_q.get(block=False, timeout=SERIAL_CHECK_FOR_COMMANDS_DELAY / 2)
                 self.__serial_comm.write(cmd)
+            line = self.__serial_comm.readline()
+            if line:
+                print(line)
             time.sleep(SERIAL_CHECK_FOR_COMMANDS_DELAY)
 
     def __configure_serial_port(self):
@@ -76,11 +72,18 @@ class BittleSerialController:
 
     def __start_communication(self):
         self.__serial_comm.open()
-        self.serial_thread.start()
+        self.__serial_thread.start()
         self._send_cmd(BittleCommand.QUERY.value)
 
     def start(self):
         self.__start_communication()
+
+    def stop(self):
+        self.sleep_bittle()
+        time.sleep(SERIAL_CHECK_FOR_COMMANDS_DELAY * 10)
+        self.__exit_flag = True
+        self.__serial_thread.join()
+        self.__serial_comm.close()
 
     def command_bittle(self, cmd: BittleCommand):
         self._send_cmd(cmd.value)
