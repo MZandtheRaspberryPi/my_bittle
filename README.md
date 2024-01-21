@@ -14,7 +14,7 @@ using a raspberry pi.
 pip install my-bittle
 ```
 
-## Usage
+## Keyboard Control Usage
 
 ```
 bittle-keyboard-control
@@ -24,6 +24,12 @@ or to specify the port:
 
 ```
 bittle-keyboard-control /dev/ttyS0
+```
+
+## API Usage
+
+```
+
 ```
 
 ## Troubleshooting

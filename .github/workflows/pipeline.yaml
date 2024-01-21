@@ -1,0 +1,40 @@
+name: Python Test and Build Package
+
+on: [ push ]
+
+jobs:
+  test:
+    runs-on: self-hosted
+    container:
+      image: mzandtheraspberrypi/imu-filter-ubuntu22-arm64:2023-08-11
+      options: --cpus 1
+    steps:
+      - name: check_versions
+        run: |
+          python3 --version
+          python3 -m pip freeze
+      - name: test
+        env:
+          graph_name: "orientation_vs_estimate.png"
+        run: |
+          export PYTHONPATH=${GITHUB_WORKSPACE}:$PYTHONPATH
+          python3 -m unittest discover tests
+  build:
+    runs-on: self-hosted
+    container:
+      image: mzandtheraspberrypi/imu-filter-ubuntu22-arm64:2023-08-11
+      options: --cpus 1
+    steps:
+      - name: check_versions
+        run: |
+          python3 --version
+          python3 -m pip freeze
+      - name: build
+        run: |
+          python3 -m build
+      - name: Archive production artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: wheels
+          path: |
+            dist
