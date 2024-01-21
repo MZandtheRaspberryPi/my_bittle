@@ -14,9 +14,9 @@ jobs:
           python3 --version
           python3 -m pip freeze
       - name: test
-        env:
-          graph_name: "orientation_vs_estimate.png"
         run: |
+          pwd
+          lsg
           export PYTHONPATH=${GITHUB_WORKSPACE}:$PYTHONPATH
           echo $PYTHONPATH
           pwd
