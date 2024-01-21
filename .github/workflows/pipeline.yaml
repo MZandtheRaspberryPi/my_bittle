@@ -18,6 +18,9 @@ jobs:
       - name: check_workspace_loc
         run: |
           echo ${GITHUB_WORKSPACE}
+      - name: check_workspace_contents
+        run: |
+          ls -l ${GITHUB_WORKSPACE}
       - name: test
         run: |
           pwd
