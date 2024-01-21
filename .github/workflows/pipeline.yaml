@@ -9,10 +9,15 @@ jobs:
       image: mzandtheraspberrypi/my-bittle-build-arm64:2024-01-21
       options: --cpus 1
     steps:
-      - name: check_versions
+      - name: check_version
         run: |
           python3 --version
+      - name: check_libraries
+        run: |
           python3 -m pip freeze
+      - name: check_workspace_loc
+        run: |
+          echo ${GITHUB_WORKSPACE}
       - name: test
         run: |
           pwd
