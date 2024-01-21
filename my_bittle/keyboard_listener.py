@@ -16,8 +16,9 @@ KEYBOARD_RIGHT_KEY = "d"
 KEYBOARD_STAND_KEY = "e"
 KEYBOARD_REST_KEY = "r"
 KEYBOARD_SIT_KEY = "f"
-KEYBOARD_STRETCH_KEY = "space"
+KEYBOARD_STRETCH_KEY = "c"
 KEYBOARD_BEEP_KEY = "b"
+KEYBOARD_QUIT_KEY = "q"
 
 MSG = f"""
 Reading commands from the keyboard and sending to the Bittle robot.
@@ -33,7 +34,7 @@ Moving around:
 {KEYBOARD_STRETCH_KEY}: stretch
 {KEYBOARD_BEEP_KEY}: beep melody
 
-CTRL-C to quit
+{KEYBOARD_QUIT_KEY} to quit
 """
 
 BITTLE_COMMAND_MAPPING = {KEYBOARD_FORWARD_KEY: BittleCommand.FORWARD,
@@ -56,6 +57,7 @@ class KeyboardListener:
         KeyboardListener.__restore_terminal_settings(self.settings)
 
     def __get_key_windows(self):
+        # note this blocks
         return msvcrt.getwch()
 
     def __get_key_linux(self):

@@ -7,20 +7,22 @@ import serial
 
 BITTLE_BAUD_RATE = 115200
 
+READY_STR = "Ready"
+
 
 class BittleCommand(enum.Enum):
     # Walking
-    FORWARD = "wkF"
-    FORWARD_LEFT = "wkL"
-    FORWARD_RIGHT = "wkR"
-    BACKWARD = "bk"
-    BACKWARD_LEFT = "bkL"
-    BACKWARD_RIGHT = "bkR"
+    FORWARD = "kwkF"
+    FORWARD_LEFT = "kwkL"
+    FORWARD_RIGHT = "kwkR"
+    BACKWARD = "kbk"
+    BACKWARD_LEFT = "kbkL"
+    BACKWARD_RIGHT = "kbkR"
     # posture
-    BALANCE = "balance"
-    REST = "rest"
-    SIT = "sit"
-    STRETCH = "str"
+    BALANCE = "kbalance"
+    REST = "krest"
+    SIT = "ksit"
+    STRETCH = "kstr"
     # util
     BEEP = "b12 8 14 8 16 18 8 17 819 4"  # b then note duration note duration, ect
     QUERY = "?"
@@ -32,6 +34,16 @@ class BittleCommand(enum.Enum):
 
 
 SERIAL_CHECK_FOR_COMMANDS_DELAY = 0.02
+
+
+def log_msg_from_bittle(line: bytes):
+    try:
+        line = line.decode()
+        print(f"from robot: {line}")
+    except UnicodeDecodeError as err:
+        print(f"from robot: {line}")
+        line = ""
+    return line
 
 
 class BittleSerialController:
@@ -48,13 +60,20 @@ class BittleSerialController:
         self.__command_q.put(cmd.encode())
 
     def __run_serial_communicator(self):
+
+        line = ""
+        while not self.__exit_flag and READY_STR not in line:
+            line = self.__serial_comm.readline()
+            line = log_msg_from_bittle(line)
+            time.sleep(SERIAL_CHECK_FOR_COMMANDS_DELAY)
+
         while not self.__exit_flag:
             if self.__command_q.qsize() > 0:
                 cmd = self.__command_q.get(block=False, timeout=SERIAL_CHECK_FOR_COMMANDS_DELAY / 2)
                 self.__serial_comm.write(cmd)
             line = self.__serial_comm.readline()
             if line:
-                print(line)
+                line = log_msg_from_bittle(line)
             time.sleep(SERIAL_CHECK_FOR_COMMANDS_DELAY)
 
     def __configure_serial_port(self):

@@ -79,3 +79,7 @@ camera. You could add this to the crontab to run at reboot. Note you may have to
 ```
 sudo python3 setup_wlan.py my_wifi_name my_password
 ```
+
+set PYTHONPATH=%PYTHONPATH;D:\ziegl\git\my_bittle
+
+venv\Scripts\python.exe my_bittle\bittle_keyboard_control.py
