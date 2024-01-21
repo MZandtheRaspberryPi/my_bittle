@@ -21,7 +21,7 @@ jobs:
           echo $PYTHONPATH
           pwd
           ls
-          cd ${GITHUB_WORKSPACE}
+          cd ${GITHUB_WORKSPACE}/..
           python3 -m unittest discover tests
   build:
     needs: test
