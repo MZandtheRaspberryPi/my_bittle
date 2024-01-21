@@ -23,14 +23,7 @@ jobs:
           ls -l ${GITHUB_WORKSPACE}
       - name: test
         run: |
-          pwd
-          lsg
-          export PYTHONPATH=${GITHUB_WORKSPACE}:$PYTHONPATH
-          echo $PYTHONPATH
-          pwd
-          ls
-          cd ${GITHUB_WORKSPACE}/..
-          python3 -m unittest discover tests
+          python3 -m unittest discover
   build:
     needs: test
     runs-on: self-hosted
