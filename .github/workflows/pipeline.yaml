@@ -21,6 +21,7 @@ jobs:
           echo $PYTHONPATH
           pwd
           ls
+          cd ${GITHUB_WORKSPACE}
           python3 -m unittest discover tests
   build:
     needs: test
@@ -35,6 +36,7 @@ jobs:
           python3 -m pip freeze
       - name: build
         run: |
+          cd ${GITHUB_WORKSPACE}
           python3 -m build
       - name: Archive production artifacts
         uses: actions/upload-artifact@v3
