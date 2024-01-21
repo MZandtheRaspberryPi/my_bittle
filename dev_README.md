@@ -83,3 +83,5 @@ sudo python3 setup_wlan.py my_wifi_name my_password
 set PYTHONPATH=%PYTHONPATH;D:\ziegl\git\my_bittle
 
 venv\Scripts\python.exe my_bittle\bittle_keyboard_control.py
+
+python3 -m twine upload dist/*

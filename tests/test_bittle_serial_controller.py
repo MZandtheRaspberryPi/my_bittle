@@ -22,8 +22,9 @@ class TestBittleSerialController(unittest.TestCase):
         """
         my_mock_serial = MagicMock()
         MockSerial.return_value = my_mock_serial
-        my_mock_serial.readline.return_value = None
+        my_mock_serial.readline.return_value = b"Ready"
         my_controller = BittleSerialController()
         my_controller.start()
+        my_controller.command_bittle(BittleCommand.FORWARD)
         my_controller.stop()
-        self.assertEqual(my_mock_serial.write.call_args_list[-1].args, (b'rest',))
+        self.assertEqual(my_mock_serial.write.call_args_list[-1].args, (b'krest',))
