@@ -5,9 +5,6 @@ import time
 
 import serial
 
-from my_bittle.keyboard_listener import KEYBOARD_FORWARD_KEY, KEYBOARD_BACKWARD_KEY, KEYBOARD_LEFT_KEY, \
-    KEYBOARD_RIGHT_KEY, KEYBOARD_STAND_KEY, KEYBOARD_REST_KEY, KEYBOARD_SIT_KEY, KEYBOARD_STRETCH_KEY, KEYBOARD_BEEP_KEY
-
 BITTLE_BAUD_RATE = 115200
 
 
@@ -28,16 +25,11 @@ class BittleCommand(enum.Enum):
     BEEP = "b12 8 14 8 16 18 8 17 819 4"  # b then note duration note duration, ect
     QUERY = "?"
 
+    @staticmethod
+    def print_all():
+        for val in BittleCommand:
+            print(val)
 
-BITTLE_COMMAND_MAPPING = {KEYBOARD_FORWARD_KEY: BittleCommand.FORWARD,
-                          KEYBOARD_BACKWARD_KEY: BittleCommand.BACKWARD,
-                          KEYBOARD_LEFT_KEY: BittleCommand.FORWARD_LEFT,
-                          KEYBOARD_RIGHT_KEY: BittleCommand.FORWARD_RIGHT,
-                          KEYBOARD_STAND_KEY: BittleCommand.BALANCE,
-                          KEYBOARD_REST_KEY: BittleCommand.REST,
-                          KEYBOARD_SIT_KEY: BittleCommand.SIT,
-                          KEYBOARD_STRETCH_KEY: BittleCommand.STRETCH,
-                          KEYBOARD_BEEP_KEY: BittleCommand.BEEP}
 
 SERIAL_CHECK_FOR_COMMANDS_DELAY = 0.02
 
@@ -93,3 +85,7 @@ class BittleSerialController:
 
     def sleep_bittle(self):
         self._send_cmd(BittleCommand.REST.value)
+
+
+if __name__ == "__main__":
+    BittleCommand.print_all()

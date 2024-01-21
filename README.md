@@ -30,8 +30,25 @@ bittle-keyboard-control /dev/ttyS0
 
 ## API Usage
 
+```python
+import time
+
+from my_bittle.bittle_serial_controller import BittleSerialController, BittleCommand
+
+port = "/dev/ttyS0"
+my_bittle_controller = BittleSerialController(port=port)
+
+my_bittle_controller.command_bittle(BittleCommand.FORWARD)
+time.sleep(2)
+my_bittle_controller.stop()
 ```
 
+To see all available commands:
+
+```python
+from my_bittle.bittle_serial_controller import BittleCommand
+
+BittleCommand.print_all()
 ```
 
 ## Troubleshooting

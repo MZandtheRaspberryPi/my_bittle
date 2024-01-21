@@ -3,7 +3,8 @@ import time
 import unittest
 from unittest.mock import patch, MagicMock
 
-from my_bittle.bittle_serial_controller import BITTLE_COMMAND_MAPPING, BittleCommand, BittleSerialController
+from my_bittle.bittle_serial_controller import BittleCommand, BittleSerialController
+from my_bittle.keyboard_listener import BITTLE_COMMAND_MAPPING
 
 
 class TestBittleSerialController(unittest.TestCase):

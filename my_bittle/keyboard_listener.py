@@ -7,6 +7,8 @@ else:
     import termios
     import tty
 
+from my_bittle.bittle_serial_controller import BittleCommand
+
 KEYBOARD_FORWARD_KEY = "w"
 KEYBOARD_BACKWARD_KEY = "d"
 KEYBOARD_LEFT_KEY = "a"
@@ -33,6 +35,16 @@ Moving around:
 
 CTRL-C to quit
 """
+
+BITTLE_COMMAND_MAPPING = {KEYBOARD_FORWARD_KEY: BittleCommand.FORWARD,
+                          KEYBOARD_BACKWARD_KEY: BittleCommand.BACKWARD,
+                          KEYBOARD_LEFT_KEY: BittleCommand.FORWARD_LEFT,
+                          KEYBOARD_RIGHT_KEY: BittleCommand.FORWARD_RIGHT,
+                          KEYBOARD_STAND_KEY: BittleCommand.BALANCE,
+                          KEYBOARD_REST_KEY: BittleCommand.REST,
+                          KEYBOARD_SIT_KEY: BittleCommand.SIT,
+                          KEYBOARD_STRETCH_KEY: BittleCommand.STRETCH,
+                          KEYBOARD_BEEP_KEY: BittleCommand.BEEP}
 
 
 class KeyboardListener:

@@ -2,9 +2,9 @@ import time
 import signal
 import sys
 
-from my_bittle.bittle_serial_controller import BittleCommand, BittleSerialController, BITTLE_COMMAND_MAPPING, \
+from my_bittle.bittle_serial_controller import BittleCommand, BittleSerialController, \
     SERIAL_CHECK_FOR_COMMANDS_DELAY
-from my_bittle.keyboard_listener import KeyboardListener, MSG
+from my_bittle.keyboard_listener import KeyboardListener, MSG, BITTLE_COMMAND_MAPPING
 
 
 def main():
