@@ -18,8 +18,12 @@ jobs:
           graph_name: "orientation_vs_estimate.png"
         run: |
           export PYTHONPATH=${GITHUB_WORKSPACE}:$PYTHONPATH
+          echo $PYTHONPATH
+          pwd
+          ls
           python3 -m unittest discover tests
   build:
+    needs: test
     runs-on: self-hosted
     container:
       image: mzandtheraspberrypi/my-bittle-build-arm64:2024-01-21
