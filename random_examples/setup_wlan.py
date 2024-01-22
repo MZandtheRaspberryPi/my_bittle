@@ -24,7 +24,7 @@ rootLogger.addHandler(consoleHandler)
 EXIT_FLAG = False
 
 logging.info("starting soft uart")
-p = subprocess.Popen(["sudo", "insmod", "/home/mikey/soft_uart/soft_uart.ko", "gpio_tx=5", "gpio_rx=6"])
+p = subprocess.Popen(["sudo", "insmod", "/home/mikey/soft_uart/soft_uart.ko", "gpio_tx=8", "gpio_rx=7"])
 
 time.sleep(2)
 
