@@ -47,9 +47,10 @@ def log_msg_from_bittle(line: bytes):
 
 
 class BittleSerialController:
-    def __init__(self, port: str = "/dev/ttyS0", timeout: float = 1):
+    def __init__(self, port: str = "/dev/ttyS0", timeout: float = 1, check_for_ready: bool = False):
         self.port = port
         self.timeout = timeout
+        self.check_for_ready = check_for_ready
         self.__serial_comm = serial.Serial()
         self.__configure_serial_port()
         self.__exit_flag = False
@@ -62,7 +63,7 @@ class BittleSerialController:
     def __run_serial_communicator(self):
 
         line = ""
-        while not self.__exit_flag and READY_STR not in line:
+        while self.check_for_ready and not self.__exit_flag and READY_STR not in line:
             line = self.__serial_comm.readline()
             line = log_msg_from_bittle(line)
             time.sleep(SERIAL_CHECK_FOR_COMMANDS_DELAY)
