@@ -1,4 +1,18 @@
-# ffmpeg -framerate 10 -i ./20240122-233344/frame_%d.png -c:v libx264 -pix_fmt yuv420p out.mp4
+"""
+This is an example that uses the MU3 Vision sensor to get video, and if it finds a face tells the bittle to walk forward. If not, to stand.
+It is a proof of concept to use video stream from the MU3 with serial control of the bittle and a little computer vision.
+
+Lots of stuff has to be setup like the pi and MU3 have to be connected to the same network, the MU3 has to have a known IP, and the PI has to have
+some libraries installed.
+
+I used a software serial port on the pi zero 2 w. The setup_wlan.py uses this software port to talk to the MU3 Vision sensor.
+https://github.com/adrianomarto/soft_uart
+
+Useful command to make a video
+ffmpeg -framerate 10 -i ./20240122-233344/frame_%d.png -c:v libx264 -pix_fmt yuv420p out.mp4
+
+"""
+
 import cv2
 from datetime import datetime
 import os
@@ -8,7 +22,9 @@ import threading
 import urllib.request
 import sys
 
+from my_bittle.keyboard_listener import KeyboardListener
 from my_bittle.bittle_serial_controller import BittleSerialController, BittleCommand
+
 port = "/dev/ttyS0"
 my_bittle_controller = BittleSerialController(port=port)
 my_bittle_controller.start()
@@ -18,8 +34,7 @@ SAVE_DIR = os.path.join(SAVE_DIR, datetime.now().strftime("%Y%m%d-%H%M%S"))
 print(SAVE_DIR)
 os.mkdir(SAVE_DIR)
 
-frame_times = []
-stream = urllib.request.urlopen('http://192.168.1.174:8888/stream')
+stream = urllib.request.urlopen('http://192.168.1.179:8888/stream')
 frame_counter = 0
 image_name = "frame_{}.png"
 face_classifier = cv2.CascadeClassifier(
@@ -30,6 +45,7 @@ CUR_IMAGE = None
 EXIT_FLAG = False
 IMAGE_LOCK = threading.Lock()
 
+my_keyboard_listener = KeyboardListener(key_timeout=0.01)
 
 def read_image():
     global CUR_IMAGE
@@ -53,6 +69,7 @@ thread_obj = threading.Thread(target=read_image)
 thread_obj.start()
 
 prev_cmd = BittleCommand.BALANCE
+start_time = time.time()
 while not EXIT_FLAG:
     time.sleep(0.01)
     with IMAGE_LOCK:
@@ -80,10 +97,12 @@ while not EXIT_FLAG:
         prev_cmd = cur_cmd
     frame_counter += 1
     cv2.imwrite(os.path.join(SAVE_DIR, image_name.format(frame_counter)), image)
-    if cv2.waitKey(33) == ord('q'):
-        print("exiting")
+    key = my_keyboard_listener.get_key()
+    if key == "q":
         EXIT_FLAG = True
+        end_time = time.time()
 
 my_bittle_controller.stop()
 thread_obj.join()
 
+print(f"fps: {frame_counter / (end_time - start_time)}")

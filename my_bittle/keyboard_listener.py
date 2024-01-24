@@ -1,4 +1,4 @@
-import select
+from select import select
 import sys
 
 if sys.platform == 'win32':
