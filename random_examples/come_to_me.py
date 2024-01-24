@@ -69,6 +69,7 @@ thread_obj = threading.Thread(target=read_image)
 thread_obj.start()
 
 prev_cmd = BittleCommand.BALANCE
+last_cmd_time = 0
 start_time = time.time()
 while not EXIT_FLAG:
     time.sleep(0.01)
@@ -92,9 +93,10 @@ while not EXIT_FLAG:
     else:
         cur_cmd = BittleCommand.BALANCE
 
-    if prev_cmd != cur_cmd:
+    if prev_cmd != cur_cmd and time.time() - last_cmd_time > 1:
         my_bittle_controller.command_bittle(cur_cmd)
         prev_cmd = cur_cmd
+        last_cmd_time = time.time()
     frame_counter += 1
     cv2.imwrite(os.path.join(SAVE_DIR, image_name.format(frame_counter)), image)
     key = my_keyboard_listener.get_key()
